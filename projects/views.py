@@ -84,3 +84,33 @@ class ProjectMemberViewSet(ModelViewSet):
             {"detail": "Member added successfully"},
             status=HTTP_200_OK,
         )
+
+    @action(detail=True, methods=["delete"])
+    def destroy(self, request, pk=None, user_id=None):
+        product = self.get_object()
+
+        try:
+            user = User.objects.get(pk=user_id)
+        except User.DoesNotExist:
+            return Response(
+                {"detail": "User not found"},
+                status=HTTP_404_NOT_FOUND,
+            )
+
+        if user == product.owner:
+            return Response(
+                {"detail": "Owner can't be removed as member"},
+                status=HTTP_400_BAD_REQUEST,
+            )
+
+        if user not in product.members.all():
+            return Response(
+                {"detail": "User not a member"},
+                status=HTTP_400_BAD_REQUEST,
+            )
+
+        product.members.remove(user)
+        return Response(
+            {"detail": "Member removed successfully"},
+            status=HTTP_200_OK,
+        )

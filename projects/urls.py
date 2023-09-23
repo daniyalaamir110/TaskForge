@@ -30,6 +30,11 @@ urlpatterns = [
                 "post": "create",
             }
         ),
-        name="project",
+        name="member",
+    ),
+    path(
+        "<int:pk>/members/<int:user_id>/",
+        ProjectMemberViewSet.as_view({"delete": "destroy"}),
+        name="member",
     ),
 ]
