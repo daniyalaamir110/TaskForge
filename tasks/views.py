@@ -1,25 +1,21 @@
 from rest_framework.viewsets import ModelViewSet
-from .serializers import TaskSerializer
+from .serializers import TaskSerializer, UpdateTaskStatusSerializer
 from rest_framework.filters import SearchFilter
+from rest_framework.generics import UpdateAPIView
 from .models import Task
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.decorators import action
 from projects.models import Project
 from rest_framework.response import Response
-from rest_framework.status import (
-    HTTP_400_BAD_REQUEST,
-    HTTP_403_FORBIDDEN,
-    HTTP_404_NOT_FOUND,
-    HTTP_200_OK,
-    HTTP_201_CREATED,
-)
+from rest_framework.status import HTTP_403_FORBIDDEN, HTTP_404_NOT_FOUND
+from .permissions import IsTaskAssignee
 
 
 class TaskViewSet(ModelViewSet):
     serializer_class = TaskSerializer
     filter_backends = (SearchFilter,)
     search_fields = ("title",)
-    permission_classes = [IsAuthenticated]
+    permission_classes = (IsAuthenticated,)
 
     def get_queryset(self):
         return Task.objects.filter(assignee=self.request.user).order_by("-updated_at")
@@ -93,3 +89,11 @@ class TaskViewSet(ModelViewSet):
             )
 
         return super().create(request=request, pk=pk)
+
+
+class UpdateTaskStatusView(UpdateAPIView):
+    permission_classes = (IsAuthenticated, IsTaskAssignee)
+    serializer_class = UpdateTaskStatusSerializer
+
+    def get_queryset(self):
+        return Task.objects.filter(assignee=self.request.user).order_by("-updated_at")

@@ -3,7 +3,6 @@ from .views import ProjectViewSet, ProjectMemberViewSet
 
 app_name = "projects"
 
-
 urlpatterns = [
     path(
         "",

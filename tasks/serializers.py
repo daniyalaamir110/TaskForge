@@ -15,3 +15,21 @@ class TaskSerializer(ModelSerializer):
         fields = "__all__"
         read_only_fields = ["status", "label_details"]
         extra_kwargs = {"labels": {"write_only": True}}
+
+
+class UpdateTaskStatusSerializer(ModelSerializer):
+    class Meta:
+        model = Task
+        fields = "__all__"
+        read_only_fields = (
+            "id",
+            "title",
+            "description",
+            "due_date",
+            "priority",
+            "labels",
+            "project",
+            "assigned_to",
+            "created_at",
+            "updated_at",
+        )

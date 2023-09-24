@@ -5,7 +5,8 @@ from rest_framework.serializers import (
 )
 from .models import Project
 from accounts.serializers import ReadOnlyUserSerializer
-from django.contrib.auth.models import User
+from labels.serializers import LabelSerializer
+from tasks.models import Task
 
 
 class ProjectSerializer(ModelSerializer):
@@ -42,3 +43,12 @@ class ProjectMemberSerializer(ModelSerializer):
     class Meta:
         model = Project
         fields = ["members", "user_id"]
+
+
+class ProjectTaskSerializer(ModelSerializer):
+    assignee = ReadOnlyUserSerializer()
+    label_details = LabelSerializer(many=True, read_only=True)
+
+    class Meta:
+        model = Task
+        fields = ["status"]

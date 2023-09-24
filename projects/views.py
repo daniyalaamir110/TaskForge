@@ -1,5 +1,5 @@
 from django.db.models.query import Q
-from rest_framework.viewsets import ModelViewSet, ReadOnlyModelViewSet
+from rest_framework.viewsets import ModelViewSet
 from rest_framework.permissions import IsAuthenticated
 from .serializers import ProjectSerializer, ProjectMemberSerializer
 from rest_framework.filters import SearchFilter
@@ -7,11 +7,7 @@ from .models import Project
 from .permissions import IsProductOwnerOrReadOnly
 from django.contrib.auth.models import User
 from rest_framework.response import Response
-from rest_framework.status import (
-    HTTP_404_NOT_FOUND,
-    HTTP_400_BAD_REQUEST,
-    HTTP_200_OK,
-)
+from rest_framework.status import HTTP_404_NOT_FOUND, HTTP_400_BAD_REQUEST, HTTP_200_OK
 from rest_framework.decorators import action
 from rest_framework.exceptions import NotFound
 from rest_framework.permissions import SAFE_METHODS

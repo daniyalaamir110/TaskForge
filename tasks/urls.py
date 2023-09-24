@@ -1,5 +1,5 @@
-from django.urls import path, include
-from .views import TaskViewSet
+from django.urls import path
+from .views import TaskViewSet, UpdateTaskStatusView
 
 app_name = "tasks"
 
@@ -24,5 +24,10 @@ urlpatterns = [
             }
         ),
         name="task",
+    ),
+    path(
+        "<int:pk>/status",
+        UpdateTaskStatusView.as_view(),
+        name="task_status",
     ),
 ]
