@@ -33,6 +33,7 @@ class Task(TimestampedModel):
             ("in_progress", "In Progress"),
             ("completed", "Completed"),
         ],
+        default="todo",
         verbose_name="Status",
     )
     labels = models.ManyToManyField(

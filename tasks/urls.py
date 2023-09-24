@@ -1,5 +1,28 @@
 from django.urls import path, include
+from .views import TaskViewSet
 
 app_name = "tasks"
 
-urlpatterns = []
+urlpatterns = [
+    path(
+        "",
+        TaskViewSet.as_view(
+            {
+                "get": "list",
+                "post": "create",
+            }
+        ),
+        name="task",
+    ),
+    path(
+        "<int:pk>/",
+        TaskViewSet.as_view(
+            {
+                "get": "retrieve",
+                "patch": "partial_update",
+                "delete": "destroy",
+            }
+        ),
+        name="task",
+    ),
+]
