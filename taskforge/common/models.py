@@ -1,7 +1,8 @@
+from typing import Any
 from django.db import models
 
 
-class TimestampedModel(models.Model):
+class TimestampedFlaggedModel(models.Model):
     """
     This is an abstract model containing `created_at`
     and `updated_at` attributes. This can be extended
@@ -10,9 +11,12 @@ class TimestampedModel(models.Model):
     """
 
     class Meta:
-        # Declare this as an abstract class
         abstract = True
 
-    # Columns
+    active = models.BooleanField(default=True)
     created_at = models.DateTimeField(auto_now_add=True, verbose_name="Created At")
     updated_at = models.DateTimeField(auto_now=True, verbose_name="Last Updated At")
+
+    def delete(self):
+        self.active = False
+        self.save()

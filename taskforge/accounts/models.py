@@ -1,7 +1,7 @@
 from django.contrib.auth.models import AbstractUser
 from django.db import models
 import uuid
-from common.models import TimestampedModel
+from common.models import TimestampedFlaggedModel
 
 
 def upload_to(instance, filename):
@@ -14,7 +14,5 @@ def upload_to(instance, filename):
     return f"images/profile_images/{image_name}.{extension}"
 
 
-class User(AbstractUser):
+class User(TimestampedFlaggedModel, AbstractUser):
     profile_image = models.ImageField(verbose_name="Profile image", upload_to=upload_to)
-    created_at = models.DateTimeField(auto_now_add=True, verbose_name="Created At")
-    updated_at = models.DateTimeField(auto_now=True, verbose_name="Last Updated At")
