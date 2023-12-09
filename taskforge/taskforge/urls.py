@@ -35,5 +35,6 @@ urlpatterns = [
     path("accounts/", include("accounts.urls"), name="accounts"),
     path("auth/", include("authn.urls"), name="auth"),
     path("notes/", include("notes.urls"), name="notes"),
+    path("organizations/", include("organizations.urls"), name="organizations"),
     path("api-docs/", schema_view, name="swagger"),
 ]

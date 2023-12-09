@@ -3,6 +3,16 @@ from rest_framework.exceptions import ValidationError
 
 
 def get_queryset_with_deleted(obj, queryset):
+    """
+    Filters a queryset based on `active` field.
+
+    `obj` -> `request` -> `query_params` -> `include_deleted`
+
+    Returns only the objects with `active` set to `True`
+    if `include_deleted` is unset or `0` | `false`.
+
+    Returns all objects if `active` is set to `1` | `true`.
+    """
     if obj.request.method in SAFE_METHODS:
         include_deleted = obj.request.query_params.get(
             "include_deleted", "false"

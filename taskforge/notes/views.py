@@ -15,7 +15,7 @@ class NoteViewSet(ModelViewSet):
     search_fields = ["title"]
 
     def get_queryset(self):
-        queryset = Note.objects.filter(author=self.request.user)
+        queryset = Note.objects.filter(author=self.request.user.id)
         queryset = get_queryset_with_deleted(self, queryset)
         return queryset
 

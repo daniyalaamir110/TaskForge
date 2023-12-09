@@ -47,6 +47,7 @@ INSTALLED_APPS = [
     "accounts",
     "authn",
     "notes",
+    "organizations",
     "drf_yasg",
 ]
 
