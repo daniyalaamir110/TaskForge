@@ -3,8 +3,8 @@ from rest_framework.permissions import IsAuthenticated
 from rest_framework.filters import SearchFilter, OrderingFilter
 from common.paginations import StandardResultsSetPagination
 from common.utils import get_queryset_with_deleted
-from .models import Organization, Designation
-from .serializers import OrganizationSerializer, DesignationSerializer
+from .models import Organization, Designation, Member
+from .serializers import OrganizationSerializer, DesignationSerializer, MemberSerializer
 
 
 class OrganizationViewset(ModelViewSet):
@@ -41,3 +41,21 @@ class DesignationViewset(ModelViewSet):
     def perform_create(self, serializer):
         organization = Organization.objects.get(id=self.get_organization_id())
         return serializer.save(organization=organization)
+
+
+class MemberViewset(ModelViewSet):
+    serializer_class = MemberSerializer
+    permission_classes = [IsAuthenticated]
+    pagination_class = StandardResultsSetPagination
+
+    def get_organization_id(self):
+        return self.kwargs["organization_id"]
+
+    def get_queryset(self):
+        queryset = Member.objects.filter(organization=self.get_organization_id())
+        queryset = get_queryset_with_deleted(self, queryset)
+        return queryset
+
+    def perform_create(self, serializer):
+        organization = Organization.objects.get(id=self.get_organization_id())
+        return serializer.save(organization=organization, added_by=self.request.user)

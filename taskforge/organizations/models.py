@@ -54,7 +54,7 @@ class Designation(TimestampedFlaggedModel):
     )
 
 
-class MemberOrganization(TimestampedFlaggedModel):
+class Member(TimestampedFlaggedModel):
     """
     Junction entity for `Organization – Member` relationship.
     Only `founder` and admins can add members. An admin is denoted
